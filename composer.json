@@ -1,0 +1,65 @@
+{
+  "name": "tusimo/resourceable",
+  "description": "api service for hyperf",
+  "type": "library",
+  "keywords": [" resource tool"],
+  "homepage": "https://github.com/tusimo/resourceable",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": "^8",
+    "tusimo/restable": "dev-master",
+    "hyperf/paginator": "^2.2",
+    "hyperf/guzzle": "^2.2",
+    "hyperf/macroable": "~2.2.0",
+    "hyperf/utils": "~2.2.8",
+    "nesbot/carbon": "^2.58",
+    "psr/container": "^1.0|^2.0",
+    "psr/event-dispatcher": "^1.0",
+    "hyperf/logger": "^2.2",
+    "hyperf/db-connection": "^2.2",
+    "hyperf/validation": "^2.2",
+    "hyperf/cache": "^2.2",
+    "fakerphp/faker": "^1.19",
+    "hyperf/config": "^2.2",
+    "hyperf/kafka": "^2.2",
+    "hyperf/async-queue": "^2.2",
+    "hyperf/crontab": "^2.2",
+    "hyperf/redis": "^2.2"
+  },
+  "autoload": {
+    "files": [
+      "src/helpers.php"
+    ],
+    "psr-4": {
+      "Tusimo\\Resource\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+        "Tusimo\\Test\\": "./test/"
+    }
+},
+  "require-dev": {
+    "symfony/var-dumper": "^6.0",
+    "friendsofphp/php-cs-fixer": "^3.0",
+    "hyperf/testing": "~2.2.0",
+    "phpstan/phpstan": "^0.12",
+    "phpunit/phpunit": "^9.5",
+    "squizlabs/php_codesniffer": "^3.7",
+    "swoole/ide-helper": "^4.8",
+    "hyperf/devtool": "^2.2"
+  },
+  "scripts": {
+    "test": "co-phpunit --prepend test/bootstrap.php -c phpunit.xml --colors=always",
+    "cs-fix": "phpcbf --standard=phpcs.xml --colors src/ && php-cs-fixer fix $1",
+    "cs": "phpcs --standard=phpcs.xml --colors src/",
+    "analyse": "phpstan analyse --memory-limit 300M -l 0 -c phpstan.neon ./src"
+  },
+  "extra": {
+    "hyperf": {
+        "config": "Tusimo\\Resource\\ConfigProvider"
+    }
+  }
+}

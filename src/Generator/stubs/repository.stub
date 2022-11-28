@@ -1,0 +1,22 @@
+<?php
+
+declare(strict_types=1);
+/**
+ * This file is part of RD Service.
+ *
+ * Please follow the code rules : PSR-2
+ *
+ * @link     https://syngit.txxcd.com/base/php-template
+ * @document https://syngit.txxcd.com/base/php-template/-/blob/master/README.md
+ * @contact  chengcheng.you@maitang001.com
+ */
+namespace App\Repository\%STUDLY_RESOURCE%;
+
+use App\Model\%STUDLY_RESOURCE%;
+use App\Repository\Base\BaseDbRepository;
+use App\Contract\Repository\%STUDLY_RESOURCE%RepositoryContract;
+
+class %STUDLY_RESOURCE%DbRepository extends BaseDbRepository implements %STUDLY_RESOURCE%RepositoryContract
+{
+    protected string $modelClass = %STUDLY_RESOURCE%::class;
+}

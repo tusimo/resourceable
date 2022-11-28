@@ -1,0 +1,42 @@
+<?php
+
+declare(strict_types=1);
+/**
+ * This file is part of RD Service.
+ *
+ * Please follow the code rules : PSR-2
+ *
+ * @link     https://syngit.txxcd.com/base/php-template
+ * @document https://syngit.txxcd.com/base/php-template/-/blob/master/README.md
+ * @contact  chengcheng.you@maitang001.com
+ */
+namespace App\Resource;
+
+use Tusimo\Resource\Resource;
+use App\Repository\%STUDLY_RESOURCE%\%STUDLY_RESOURCE%DbRepository;
+use Tusimo\Resource\Contract\ResourceRepositoryContract;
+
+/**
+ * @property int $id
+ * @property string $app
+ * @property string $created_by
+ * @property string $created_at
+ * @property string $updated_at
+ */
+class %STUDLY_RESOURCE% extends Resource
+{
+    protected string $resourceName = '%PLURAL_RESOURCE%';
+
+    protected $casts = [
+        'id' => 'integer',
+        'app' => 'string',
+        'created_by' => 'string',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    public function repository(): ResourceRepositoryContract
+    {
+        return new %STUDLY_RESOURCE%DbRepository();
+    }
+}

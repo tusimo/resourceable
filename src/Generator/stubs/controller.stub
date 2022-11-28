@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+/**
+ * This file is part of RD Service.
+ *
+ * Please follow the code rules : PSR-2
+ *
+ * @link     https://syngit.txxcd.com/base/php-template
+ * @document https://syngit.txxcd.com/base/php-template/-/blob/master/README.md
+ * @contact  chengcheng.you@maitang001.com
+ */
+namespace App\Controller;
+
+use App\Service\%STUDLY_RESOURCE%Service;
+use Hyperf\Di\Annotation\Inject;
+use App\Controller\Base\RestController;
+
+class %STUDLY_RESOURCE%Controller extends RestController
+{
+    protected string $resourceName = '%PLURAL_RESOURCE%';
+
+    /**
+     * %STUDLY_RESOURCE%Service.
+     * @var %STUDLY_RESOURCE%Service
+     * @Inject
+     */
+    protected $service;
+}
