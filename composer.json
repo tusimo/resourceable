@@ -9,7 +9,7 @@
   "prefer-stable": true,
   "require": {
     "php": "^8",
-    "tusimo/restable": "dev-master",
+    "tusimo/restable": "^1.0",
     "hyperf/paginator": "^2.2",
     "hyperf/guzzle": "^2.2",
     "hyperf/macroable": "~2.2.0",
