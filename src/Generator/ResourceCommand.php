@@ -123,7 +123,7 @@ class ResourceCommand extends GeneratorCommand
 //@AutoCreateStart:%s
 //@todo merge the content below into one group
 Router::addGroup('/api', function () {
-    Router::addGroup('/v1', function () {
+    Router::addGroup('/v2', function () {
         Router::resource('%s', \App\Controller\%sController::class);
     });
 });

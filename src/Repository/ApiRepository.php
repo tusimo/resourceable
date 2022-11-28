@@ -26,9 +26,9 @@ class ApiRepository extends Repository implements ClientResolverContract
 
     protected string $baseUri = '';
 
-    protected string $version = 'v1';
+    protected string $version = 'v2';
 
-    protected string $apiVersion = 'v1';
+    protected string $apiVersion = 'v2';
 
     protected ?HeaderResolverContract $headerResolver;
 
