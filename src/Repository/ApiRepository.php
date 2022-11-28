@@ -431,8 +431,8 @@ class ApiRepository extends Repository implements ClientResolverContract
             'headers' => $this->getCommonHeaders() + [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
-                'User-Agent' => 'melo.api.client v1.0',
-                'Authorization' => 'e12f91a863eae313ae6ed20859f61720',
+                'User-Agent' => 'api.client v1.0',
+                'Authorization' => 'b9ddbadb4ebbf06110b93d98adb1497c',
             ],
             'debug' => $this->getDebug(),
         ];

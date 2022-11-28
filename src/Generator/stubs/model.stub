@@ -2,13 +2,9 @@
 
 declare(strict_types=1);
 /**
- * This file is part of RD Service.
+ * This file is part of API Service.
  *
  * Please follow the code rules : PSR-2
- *
- * @link     https://syngit.txxcd.com/base/php-template
- * @document https://syngit.txxcd.com/base/php-template/-/blob/master/README.md
- * @contact  chengcheng.you@maitang001.com
  */
 namespace App\Model;
 
