@@ -8,7 +8,7 @@ declare(strict_types=1);
  */
 namespace Tusimo\Resource\Repository;
 
-use Tusimo\Query\Query;
+use Tusimo\Restable\Query;
 use Hyperf\Paginator\LengthAwarePaginator;
 use Tusimo\Resource\Contract\FilterContract;
 use Tusimo\Resource\Contract\ResourceCleanAble;

@@ -11,7 +11,7 @@ namespace Tusimo\Resource\Model;
 use Closure;
 use Hyperf\Utils\Arr;
 use Hyperf\Utils\Str;
-use Tusimo\Query\Query;
+use Tusimo\Restable\Query;
 use BadMethodCallException;
 use Hyperf\Paginator\Paginator;
 use Hyperf\Utils\Contracts\Arrayable;

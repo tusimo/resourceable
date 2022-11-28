@@ -8,9 +8,9 @@ declare(strict_types=1);
  */
 namespace Tusimo\Resource\Repository;
 
-use Tusimo\Query\Query;
+use Tusimo\Restable\Query;
 use Psr\Log\LoggerInterface;
-use Tusimo\Query\QuerySelect;
+use Tusimo\Restable\QuerySelect;
 use Psr\Http\Message\ResponseInterface;
 use Hyperf\Paginator\LengthAwarePaginator;
 use Tusimo\Resource\Concerns\HasClientResolvable;

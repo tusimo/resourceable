@@ -8,9 +8,9 @@ declare(strict_types=1);
  */
 namespace Tusimo\Resource\Repository;
 
-use Tusimo\Query\Query;
+use Tusimo\Restable\Query;
 use Hyperf\DbConnection\Db;
-use Tusimo\Query\QueryItem;
+use Tusimo\Restable\QueryItem;
 use Hyperf\Database\Query\Builder;
 
 class SubDbTableRepository extends DbRepository

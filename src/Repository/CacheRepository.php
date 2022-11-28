@@ -10,7 +10,7 @@ namespace Tusimo\Resource\Repository;
 
 use Swoole\Timer;
 use Hyperf\Utils\Arr;
-use Tusimo\Query\Query;
+use Tusimo\Restable\Query;
 use Hyperf\Paginator\LengthAwarePaginator;
 use Tusimo\Resource\Contract\ResourceCacheAble;
 use Tusimo\Resource\Contract\ResourceCleanAble;

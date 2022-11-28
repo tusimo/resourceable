@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace Tusimo\Resource\Entity;
 
 use Hyperf\Utils\Str;
-use Tusimo\Query\Query;
 use Hyperf\Utils\Context;
+use Tusimo\Restable\Query;
 use Hyperf\HttpServer\Request;
 use Psr\Http\Message\ServerRequestInterface;
 

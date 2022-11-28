@@ -253,6 +253,7 @@ class RequestContext extends Fluent implements CompressInterface, UnCompressInte
     }
 
     /**
+     * @param mixed $clientPackage
      * @return $this
      */
     public function setClientPackage($clientPackage)
@@ -269,6 +270,7 @@ class RequestContext extends Fluent implements CompressInterface, UnCompressInte
     }
 
     /**
+     * @param mixed $consumerName
      * @return $this
      */
     public function setConsumer($consumerName)

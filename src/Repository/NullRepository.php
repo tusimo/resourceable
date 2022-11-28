@@ -8,7 +8,7 @@ declare(strict_types=1);
  */
 namespace Tusimo\Resource\Repository;
 
-use Tusimo\Query\Query;
+use Tusimo\Restable\Query;
 use Hyperf\Paginator\LengthAwarePaginator;
 
 class NullRepository extends Repository
