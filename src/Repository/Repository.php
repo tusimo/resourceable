@@ -61,7 +61,7 @@ abstract class Repository implements ResourceRepositoryContract
      *
      * @param string $keyName Resource KeyName
      *
-     * @return self
+     * @return static
      */
     public function setKeyName(string $keyName)
     {

@@ -35,4 +35,43 @@ interface ResourceCacheAble extends ResourceCleanAble
      * Set resources cache.
      */
     public function setResourcesCache(array $resources, int $ttl);
+
+    /**
+     * Get the value of keyName.
+     */
+    public function getKeyName(): string;
+
+    /**
+     * Set the value of keyName.
+     *
+     * @param mixed $keyName
+     * @return self
+     */
+    public function setKeyName($keyName);
+
+    /**
+     * Get the value of resourceName.
+     */
+    public function getResourceName(): string;
+
+    /**
+     * Set the value of resourceName.
+     *
+     * @param mixed $resourceName
+     * @return self
+     */
+    public function setResourceName($resourceName);
+
+    /**
+     * Get the value of prefix.
+     */
+    public function getPrefix(): string;
+
+    /**
+     * Set the value of prefix.
+     *
+     * @param mixed $prefix
+     * @return self
+     */
+    public function setPrefix($prefix);
 }

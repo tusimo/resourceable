@@ -22,12 +22,15 @@ class CollectionRepository extends Repository
 
     protected IdGenerator $idGenerator;
 
-    public function __construct(string $resourceName, string $keyName = 'id', string $keyType = 'int')
+    public function __construct(string $resourceName, string $keyName = 'id', string $keyType = 'int', ?MemoryCollection $collection = null)
     {
         $this->keyName = $keyName;
         $this->resourceName = $resourceName;
         $this->keyType = $keyType;
-        $this->setCollection(MemoryCollectionManager::getCollection($resourceName));
+        if (is_null($collection)) {
+            $collection = MemoryCollectionManager::getCollection($resourceName);
+        }
+        $this->setCollection($collection);
         $this->setIdGenerator(new IdGenerator($resourceName, $keyType));
     }
 

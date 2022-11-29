@@ -23,6 +23,7 @@ use Tusimo\Resource\Filter\Bits\RedisBitHandler;
 use Tusimo\Resource\Resolver\PoolClientResolver;
 use Tusimo\Resource\Repository\Cache\MemoryCache;
 use Tusimo\Resource\Repository\Cache\StorageCache;
+use Tusimo\Resource\Repository\MixCacheRepository;
 use Tusimo\Resource\Filter\BloomFilter\BloomFilter;
 use Tusimo\Resource\Resolver\ContextHeaderResolver;
 use Tusimo\Resource\Repository\Cache\RedisHashCache;
@@ -98,6 +99,18 @@ trait HasRepository
     protected function redisHashCacheRepository(ResourceRepositoryContract $repo): CacheRepository
     {
         return $this->cacheRepository($repo, $this->redisHashCacheInstance());
+    }
+
+    protected function mixStorageCacheRepository(ResourceRepositoryContract $repo, array $mixKeys): CacheRepository
+    {
+        return new MixCacheRepository(
+            $repo,
+            $this->getResourceName(),
+            $this->storageCacheInstance(),
+            $this->getKeyName(),
+            3600,
+            $mixKeys
+        );
     }
 
     /**
