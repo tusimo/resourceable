@@ -10,17 +10,24 @@ namespace Tusimo\Resource\Repository;
 
 use Hyperf\Utils\Arr;
 use Tusimo\Restable\Query;
-use Hyperf\Paginator\LengthAwarePaginator;
 use Tusimo\Resource\Contract\ResourceCacheAble;
 use Tusimo\Resource\Contract\ResourceCleanAble;
 use Tusimo\Resource\Contract\RepositoryProxyAble;
 use Tusimo\Resource\Contract\ResourceRepositoryContract;
 
-class MixCacheRepository extends CacheRepository implements ResourceCleanAble, RepositoryProxyAble
+class MixCacheRepository extends ProxyRepository implements ResourceCleanAble, RepositoryProxyAble
 {
     public const VISUAL_ID = '_visual_id';
 
     public const REAL_ID = '_real_id';
+
+    // cache instance for store mix key index
+    protected ResourceCacheAble $cache;
+
+    /**
+     * Ttl in seconds.
+     */
+    protected int $ttl;
 
     /**
      * Mix Keys
@@ -43,26 +50,8 @@ class MixCacheRepository extends CacheRepository implements ResourceCleanAble, R
         $this->ttl = $ttl;
         $this->mixKeys = $mixKeys;
         // auto set cache
-        $this->cache->setPrefix('idx');
-        $this->cache->setKeyName(self::VISUAL_ID);
-    }
-
-    /**
-     * Get Resource by id.
-     *
-     * @param int|string $id
-     */
-    public function get($id, array $select = [], array $with = []): array
-    {
-        return parent::get($id, $select, $with);
-    }
-
-    /**
-     * Get Resources by Ids.
-     */
-    public function getByIds(array $ids, array $select = [], array $with = []): array
-    {
-        return parent::getByIds($ids, $select, $with);
+        $this->getCache()->setKeyName(self::VISUAL_ID);
+        $this->getCache()->setResourceName($this->getResourceName() . ':idx');
     }
 
     /**
@@ -143,16 +132,6 @@ class MixCacheRepository extends CacheRepository implements ResourceCleanAble, R
             }
         }
         return parent::deleteByIds($ids);
-    }
-
-    /**
-     * Get Resource Paginator.
-     *
-     * @return LengthAwarePaginator
-     */
-    public function list(Query $query)
-    {
-        return parent::list($query);
     }
 
     /**
@@ -306,5 +285,63 @@ class MixCacheRepository extends CacheRepository implements ResourceCleanAble, R
             $virtualResourceIds[] = $this->getResourceMixCacheKeyName($resource);
         }
         $this->getCache()->deleteResourcesCache($virtualResourceIds);
+    }
+
+    /**
+     * clean resource.
+     */
+    public function shouldClean(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the value of cache.
+     */
+    public function getCache()
+    {
+        return $this->cache;
+    }
+
+    /**
+     * Set the value of cache.
+     *
+     * @param mixed $cache
+     * @return self
+     */
+    public function setCache($cache)
+    {
+        $this->cache = $cache;
+
+        return $this;
+    }
+
+    /**
+     * Get expire Seconds for resource.
+     *
+     * @return int
+     */
+    public function getTtl()
+    {
+        return $this->ttl;
+    }
+
+    /**
+     * Set expire Seconds for resource.
+     *
+     * @param int $ttl Expire Seconds for resource
+     *
+     * @return self
+     */
+    public function setTtl($ttl)
+    {
+        $this->ttl = $ttl;
+
+        return $this;
+    }
+
+    protected function getRandomTtl()
+    {
+        return rand($this->getTtl() - 20, $this->getTtl() + 20);
     }
 }
