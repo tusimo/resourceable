@@ -10,39 +10,26 @@ namespace Tusimo\Resource\Repository;
 
 use Tusimo\Restable\Query;
 use Tusimo\Resource\Resource;
-use Tusimo\Resource\Utils\IdGenerator;
 use Tusimo\Resource\Utils\MemoryCollection;
-use Tusimo\Resource\Utils\MemoryCollectionManager;
 
-class CollectionRepository extends Repository
+class StaticRepository extends Repository
 {
-    protected MemoryCollection $collection;
+    protected array $data = [];
 
-    protected string $keyType = 'int';
-
-    protected IdGenerator $idGenerator;
-
-    public function __construct(string $resourceName, string $keyName = 'id', string $keyType = 'int', ?MemoryCollection $collection = null)
+    public function getData(): array
     {
-        $this->keyName = $keyName;
-        $this->resourceName = $resourceName;
-        $this->keyType = $keyType;
-        if (is_null($collection)) {
-            $collection = MemoryCollectionManager::getCollection($resourceName);
-        }
-        $this->setCollection($collection);
-        $this->setIdGenerator(new IdGenerator($resourceName, $keyType));
+        return $this->data;
+    }
+
+    public function setData(array $data)
+    {
+        $this->data = $data;
+        return $this;
     }
 
     public function getCollection(): MemoryCollection
     {
-        return $this->collection;
-    }
-
-    public function setCollection(MemoryCollection $collection)
-    {
-        $this->collection = $collection;
-        return $this;
+        return new MemoryCollection($this->getData());
     }
 
     /**
@@ -82,9 +69,7 @@ class CollectionRepository extends Repository
      */
     public function add(array $resource): array
     {
-        $result = $resource + $this->virtualIdPair();
-        $this->getCollection()->push($result);
-        return $result;
+        throw new \RuntimeException('static repository can not add');
     }
 
     /**
@@ -92,11 +77,7 @@ class CollectionRepository extends Repository
      */
     public function batchAdd(array $resources): array
     {
-        $results = [];
-        foreach ($resources as $resource) {
-            $results[] = $this->add($resource);
-        }
-        return $results;
+        throw new \RuntimeException('static repository can not batch add');
     }
 
     /**
@@ -106,15 +87,7 @@ class CollectionRepository extends Repository
      */
     public function update($id, array $resource): array
     {
-        $oldResource = $this->get($id);
-
-        if (empty($oldResource)) {
-            return [];
-        }
-
-        $this->getCollection()->updateBy($this->getKeyName(), $id, $resource);
-
-        return $this->get($id);
+        throw new \RuntimeException('static repository can not update');
     }
 
     /**
@@ -122,12 +95,7 @@ class CollectionRepository extends Repository
      */
     public function batchUpdate(array $resources): array
     {
-        $keyName = $this->getKeyName();
-        $results = [];
-        foreach ($resources as $resource) {
-            $results[] = $this->update($resource[$keyName], $resource);
-        }
-        return $results;
+        throw new \RuntimeException('static repository can not batch update');
     }
 
     /**
@@ -137,8 +105,7 @@ class CollectionRepository extends Repository
      */
     public function delete($id): bool
     {
-        $this->getCollection()->deleteBy($this->getKeyName(), $id);
-        return true;
+        throw new \RuntimeException('static repository can not delete');
     }
 
     /**
@@ -146,10 +113,7 @@ class CollectionRepository extends Repository
      */
     public function deleteByIds(array $ids): int
     {
-        foreach ($ids as $id) {
-            $this->delete($id);
-        }
-        return count($ids);
+        throw new \RuntimeException('static repository can not batch delete');
     }
 
     /**
@@ -243,60 +207,6 @@ class CollectionRepository extends Repository
             }
         }
         return $result;
-    }
-
-    /**
-     * Get the value of idGenerator.
-     */
-    public function getIdGenerator()
-    {
-        return $this->idGenerator;
-    }
-
-    /**
-     * Set the value of idGenerator.
-     *
-     * @param mixed $idGenerator
-     * @return self
-     */
-    public function setIdGenerator($idGenerator)
-    {
-        $this->idGenerator = $idGenerator;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of keyType.
-     */
-    public function getKeyType()
-    {
-        return $this->keyType;
-    }
-
-    /**
-     * Set the value of keyType.
-     *
-     * @param mixed $keyType
-     * @return self
-     */
-    public function setKeyType($keyType)
-    {
-        $this->keyType = $keyType;
-
-        return $this;
-    }
-
-    protected function virtualId()
-    {
-        return $this->getIdGenerator()->getNextId();
-    }
-
-    protected function virtualIdPair(): array
-    {
-        return [
-            $this->getKeyName() => $this->virtualId(),
-        ];
     }
 
     protected function getCollectionByQueryWithoutPage(MemoryCollection $collection, Query $query): MemoryCollection

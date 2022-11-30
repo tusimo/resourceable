@@ -14,11 +14,14 @@ use Tusimo\Restable\Query;
 use Hyperf\Paginator\LengthAwarePaginator;
 use Tusimo\Resource\Contract\ResourceCacheAble;
 use Tusimo\Resource\Contract\ResourceCleanAble;
+use Tusimo\Resource\Repository\Traits\ProxyAble;
 use Tusimo\Resource\Contract\RepositoryProxyAble;
 use Tusimo\Resource\Contract\ResourceRepositoryContract;
 
 class CacheRepository extends Repository implements ResourceCleanAble, RepositoryProxyAble
 {
+    use ProxyAble;
+
     /**
      * Expire Seconds for resource.
      */
@@ -33,13 +36,6 @@ class CacheRepository extends Repository implements ResourceCleanAble, Repositor
      * The cache instance.
      */
     protected ResourceCacheAble $cache;
-
-    /**
-     * Get Real Repo.
-     *
-     * @var ResourceRepositoryContract
-     */
-    protected $repository;
 
     protected bool $withoutCache = false;
 
@@ -311,28 +307,6 @@ class CacheRepository extends Repository implements ResourceCleanAble, Repositor
     public function aggregate(Query $query): array
     {
         return $this->getRepository()->aggregate($query);
-    }
-
-    /**
-     * Get get Real Repo.
-     */
-    public function getRepository(): ResourceRepositoryContract
-    {
-        return $this->repository;
-    }
-
-    /**
-     * Set get Real Repo.
-     *
-     * @param ResourceRepositoryContract $repository Get Real Repo
-     *
-     * @return self
-     */
-    public function setRepository(ResourceRepositoryContract $repository)
-    {
-        $this->repository = $repository;
-
-        return $this;
     }
 
     /**

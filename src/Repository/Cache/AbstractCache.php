@@ -29,7 +29,7 @@ abstract class AbstractCache implements ResourceCacheAble
     /**
      * Get the value of keyName.
      */
-    public function getKeyName()
+    public function getKeyName(): string
     {
         return $this->keyName;
     }
@@ -58,7 +58,7 @@ abstract class AbstractCache implements ResourceCacheAble
     /**
      * Get the value of resourceName.
      */
-    public function getResourceName()
+    public function getResourceName(): string
     {
         return $this->resourceName;
     }
@@ -79,7 +79,7 @@ abstract class AbstractCache implements ResourceCacheAble
     /**
      * Get the value of prefix.
      */
-    public function getPrefix()
+    public function getPrefix(): string
     {
         return $this->prefix;
     }

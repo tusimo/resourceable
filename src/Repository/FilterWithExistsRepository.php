@@ -12,6 +12,7 @@ use Tusimo\Restable\Query;
 use Hyperf\Paginator\LengthAwarePaginator;
 use Tusimo\Resource\Contract\FilterContract;
 use Tusimo\Resource\Contract\ResourceCleanAble;
+use Tusimo\Resource\Repository\Traits\ProxyAble;
 use Tusimo\Resource\Contract\RepositoryProxyAble;
 use Tusimo\Resource\Contract\ResourceRepositoryContract;
 
@@ -21,12 +22,7 @@ use Tusimo\Resource\Contract\ResourceRepositoryContract;
  */
 class FilterWithExistsRepository extends Repository implements ResourceCleanAble, RepositoryProxyAble
 {
-    /**
-     * Get Real Repo.
-     *
-     * @var ResourceRepositoryContract
-     */
-    protected $repository;
+    use ProxyAble;
 
     protected bool $withoutFilter = false;
 
@@ -236,28 +232,6 @@ class FilterWithExistsRepository extends Repository implements ResourceCleanAble
     public function aggregate(Query $query): array
     {
         return $this->getRepository()->aggregate($query);
-    }
-
-    /**
-     * Get get Real Repo.
-     */
-    public function getRepository(): ResourceRepositoryContract
-    {
-        return $this->repository;
-    }
-
-    /**
-     * Set get Real Repo.
-     *
-     * @param ResourceRepositoryContract $repository Get Real Repo
-     *
-     * @return self
-     */
-    public function setRepository(ResourceRepositoryContract $repository)
-    {
-        $this->repository = $repository;
-
-        return $this;
     }
 
     /**

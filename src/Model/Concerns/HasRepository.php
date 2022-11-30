@@ -12,6 +12,7 @@ use Hyperf\Redis\Redis;
 use Hyperf\Cache\CacheManager;
 use Hyperf\Redis\RedisFactory;
 use Hyperf\Crontab\LoggerInterface;
+use Tusimo\Resource\Utils\MemoryCollection;
 use Tusimo\Resource\Repository\DbRepository;
 use Tusimo\Resource\Repository\ApiRepository;
 use Tusimo\Resource\Repository\NullRepository;
@@ -23,6 +24,7 @@ use Tusimo\Resource\Filter\Bits\RedisBitHandler;
 use Tusimo\Resource\Resolver\PoolClientResolver;
 use Tusimo\Resource\Repository\Cache\MemoryCache;
 use Tusimo\Resource\Repository\Cache\StorageCache;
+use Tusimo\Resource\Repository\MixCacheRepository;
 use Tusimo\Resource\Filter\BloomFilter\BloomFilter;
 use Tusimo\Resource\Resolver\ContextHeaderResolver;
 use Tusimo\Resource\Repository\Cache\RedisHashCache;
@@ -100,6 +102,18 @@ trait HasRepository
         return $this->cacheRepository($repo, $this->redisHashCacheInstance());
     }
 
+    protected function mixStorageCacheRepository(ResourceRepositoryContract $repo, array $mixKeys): MixCacheRepository
+    {
+        return new MixCacheRepository(
+            $repo,
+            $this->getResourceName(),
+            $this->storageCacheInstance(),
+            $this->getKeyName(),
+            3600,
+            $mixKeys
+        );
+    }
+
     /**
      * New a cache repository.
      */
@@ -118,12 +132,13 @@ trait HasRepository
     /**
      * New a collection repository.
      */
-    protected function collectionRepository(): CollectionRepository
+    protected function collectionRepository(?MemoryCollection $collection = null): CollectionRepository
     {
         return new CollectionRepository(
             $this->getResourceName(),
             $this->getKeyName(),
-            $this->getKeyType()
+            $this->getKeyType(),
+            $collection
         );
     }
 
