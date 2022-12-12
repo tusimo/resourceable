@@ -6,10 +6,10 @@ declare(strict_types=1);
  *
  * Please follow the code rules : PSR-2
  */
-namespace App\Resource;
+namespace %NAMESPACE%;
 
 use Tusimo\Resource\Resource;
-use App\Repository\%STUDLY_RESOURCE%\%STUDLY_RESOURCE%DbRepository;
+use App\Repository\%PATH%%STUDLY_RESOURCE%\%STUDLY_RESOURCE%DbRepository;
 use Tusimo\Resource\Contract\ResourceRepositoryContract;
 
 /**

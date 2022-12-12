@@ -6,7 +6,8 @@ declare(strict_types=1);
  *
  * Please follow the code rules : PSR-2
  */
-namespace App\Contract\Repository;
+namespace %NAMESPACE%;
+use App\Contract\Repository\BaseRepositoryContract;
 
 interface %STUDLY_RESOURCE%RepositoryContract extends BaseRepositoryContract
 {

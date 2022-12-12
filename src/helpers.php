@@ -77,3 +77,17 @@ function formatBytes($size, $precision = 2)
 
     return round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
 }
+
+function is_empty_dir(string $path): bool
+{
+    $handler = @opendir($path);
+    $i = 0;
+    while ($file = readdir($handler)) {
+        ++$i;
+    }
+    closedir($handler);
+    if ($i > 2) {
+        return false;
+    }
+    return true;
+}

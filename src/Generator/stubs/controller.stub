@@ -6,9 +6,9 @@ declare(strict_types=1);
  *
  * Please follow the code rules : PSR-2
  */
-namespace App\Controller;
+namespace %NAMESPACE%;
 
-use App\Service\%STUDLY_RESOURCE%Service;
+use App\Service\%PATH%%STUDLY_RESOURCE%Service;
 use Hyperf\Di\Annotation\Inject;
 use App\Controller\Base\RestController;
 

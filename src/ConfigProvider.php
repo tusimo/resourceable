@@ -13,13 +13,14 @@ use Hyperf\Kafka\ConsumerManager;
 use Hyperf\Event\ListenerProvider;
 use Tusimo\Resource\Job\ResourceConsumer;
 use Psr\Http\Message\ServerRequestInterface;
-use Tusimo\Resource\Generator\ResourceCommand;
 use Tusimo\Resource\Listener\FetchModeListener;
 use Tusimo\Resource\Listener\InitCacheListener;
 use Tusimo\Resource\Collector\ListenerCollector;
 use Tusimo\Resource\Listener\ModelEventListener;
 use Tusimo\Resource\Listener\ModelChangedListener;
+use Tusimo\Resource\Generator\ResourceDeleteCommand;
 use Tusimo\Resource\Listener\ModelHookEventListener;
+use Tusimo\Resource\Generator\ResourceGenerateCommand;
 use Hyperf\Kafka\Listener\BeforeMainServerStartListener;
 use Tusimo\Resource\Listener\RemoteResourceChangedListener;
 use Tusimo\Resource\Middleware\InitRequestContextMiddleware;
@@ -34,7 +35,8 @@ class ConfigProvider
                 ServerRequestInterface::class => \Tusimo\Resource\Entity\ResourceRequest::class,
             ],
             'commands' => [
-                ResourceCommand::class,
+                ResourceGenerateCommand::class,
+                ResourceDeleteCommand::class,
             ],
             'listeners' => [
                 FetchModeListener::class,

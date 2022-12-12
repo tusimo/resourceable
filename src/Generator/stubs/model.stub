@@ -6,7 +6,8 @@ declare(strict_types=1);
  *
  * Please follow the code rules : PSR-2
  */
-namespace App\Model;
+namespace %NAMESPACE%;
+use App\Model\Model;
 
 class %STUDLY_RESOURCE% extends Model
 {
