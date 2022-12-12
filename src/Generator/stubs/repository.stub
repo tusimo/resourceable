@@ -6,11 +6,11 @@ declare(strict_types=1);
  *
  * Please follow the code rules : PSR-2
  */
-namespace App\Repository\%STUDLY_RESOURCE%;
+namespace %NAMESPACE%;
 
-use App\Model\%STUDLY_RESOURCE%;
+use App\Model\%PATH%%STUDLY_RESOURCE%;
 use App\Repository\Base\BaseDbRepository;
-use App\Contract\Repository\%STUDLY_RESOURCE%RepositoryContract;
+use App\Contract\Repository\%PATH%%STUDLY_RESOURCE%RepositoryContract;
 
 class %STUDLY_RESOURCE%DbRepository extends BaseDbRepository implements %STUDLY_RESOURCE%RepositoryContract
 {

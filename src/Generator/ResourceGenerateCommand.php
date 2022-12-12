@@ -20,12 +20,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @Command
  */
 #[Command]
-class ResourceCommand extends GeneratorCommand
+class ResourceGenerateCommand extends GeneratorCommand
 {
-    public function __construct()
+    public function __construct($name = 'resources:gen')
     {
-        parent::__construct('gen:resources');
+        parent::__construct($name);
         $this->setDescription('Create a new resource');
+        $this->addOption('path', 'p', InputOption::VALUE_OPTIONAL, 'Path for the resource.');
         $this->addOption('no-migration', 'm', InputOption::VALUE_NONE, 'Do not create migration file.');
         $this->addOption('no-routes', 'r', InputOption::VALUE_NONE, 'Do not create routes.');
     }
@@ -61,13 +62,21 @@ class ResourceCommand extends GeneratorCommand
         return $this->getApplication()->find($command)->run($this->createInputFromArguments($arguments), $this->output);
     }
 
+    protected function getCurrentNamespace($name)
+    {
+        if (! $path = $this->input->getOption('path')) {
+            return $name;
+        }
+        return rtrim($name, '\\') . '\\' . $path;
+    }
+
     protected function generateResource(InputInterface $input, OutputInterface $output)
     {
         $this->buildResource(
             $input,
             $output,
             $this->getStudlyResourceName(),
-            'App\\Model\\',
+            $this->getCurrentNamespace('App\\Model'),
             __DIR__ . '/stubs/model.stub'
         );
 
@@ -75,7 +84,7 @@ class ResourceCommand extends GeneratorCommand
             $input,
             $output,
             $this->getStudlyResourceName() . 'RepositoryContract',
-            'App\\Contract\\Repository',
+            $this->getCurrentNamespace('App\\Contract\\Repository'),
             __DIR__ . '/stubs/contract.stub'
         );
 
@@ -83,7 +92,7 @@ class ResourceCommand extends GeneratorCommand
             $input,
             $output,
             $this->getStudlyResourceName() . 'DbRepository',
-            'App\\Repository\\' . $this->getStudlyResourceName(),
+            $this->getCurrentNamespace('App\\Repository') . '\\' . $this->getStudlyResourceName(),
             __DIR__ . '/stubs/repository.stub'
         );
 
@@ -91,7 +100,7 @@ class ResourceCommand extends GeneratorCommand
             $input,
             $output,
             $this->getStudlyResourceName(),
-            'App\\Resource',
+            $this->getCurrentNamespace('App\\Resource'),
             __DIR__ . '/stubs/resource.stub'
         );
 
@@ -99,7 +108,7 @@ class ResourceCommand extends GeneratorCommand
             $input,
             $output,
             $this->getStudlyResourceName() . 'Service',
-            'App\\Service',
+            $this->getCurrentNamespace('App\\Service'),
             __DIR__ . '/stubs/service.stub'
         );
 
@@ -107,7 +116,7 @@ class ResourceCommand extends GeneratorCommand
             $input,
             $output,
             $this->getStudlyResourceName() . 'Controller',
-            'App\\Controller',
+            $this->getCurrentNamespace('App\\Controller'),
             __DIR__ . '/stubs/controller.stub'
         );
     }
@@ -124,16 +133,23 @@ class ResourceCommand extends GeneratorCommand
 //@todo merge the content below into one group
 Router::addGroup('/api', function () {
     Router::addGroup('/v2', function () {
-        Router::resource('%s', \App\Controller\%sController::class);
+        Router::resource('%s', \App\Controller\%s%sController::class);
     });
 });
 //@AutoCreateEnd:%s
 
 EOF;
+        $path = $this->input->getOption('path');
+        if ($path) {
+            $path .= '\\';
+        } else {
+            $path = '';
+        }
         $routeString = sprintf(
             $routeSTR,
             $this->getPluralResourceName(),
             $this->getPluralResourceName(),
+            $path,
             $this->getStudlyResourceName(),
             $this->getPluralResourceName()
         );
@@ -210,8 +226,27 @@ EOF;
     {
         $stub = file_get_contents($stub);
 
-        return $this->replaceNamespace($stub, $name)->replaceResource($stub)
+        return $this->replacePath($stub)->replaceNamespace($stub, $name)->replaceResource($stub)
             ->replaceClass($stub, $name);
+    }
+
+    protected function replacePath(string &$stub)
+    {
+        if ($path = $this->input->getOption('path')) {
+            $stub = str_replace(
+                ['%PATH%'],
+                [$path . '\\'],
+                $stub
+            );
+        } else {
+            $stub = str_replace(
+                ['%PATH%'],
+                [''],
+                $stub
+            );
+        }
+
+        return $this;
     }
 
     protected function getResourceName(): string

@@ -6,9 +6,10 @@ declare(strict_types=1);
  *
  * Please follow the code rules : PSR-2
  */
-namespace App\Service;
+namespace %NAMESPACE%;
 
-use App\Resource\%STUDLY_RESOURCE%;
+use App\Resource\%PATH%%STUDLY_RESOURCE%;
+use App\Service\BaseService;
 
 class %STUDLY_RESOURCE%Service extends BaseService
 {
