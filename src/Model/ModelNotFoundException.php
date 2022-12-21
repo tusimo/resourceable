@@ -9,9 +9,8 @@ declare(strict_types=1);
 namespace Tusimo\Resource\Model;
 
 use Hyperf\Utils\Arr;
-use RuntimeException;
 
-class ModelNotFoundException extends RuntimeException
+class ModelNotFoundException extends \RuntimeException
 {
     /**
      * Name of the affected Model model.

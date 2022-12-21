@@ -8,7 +8,6 @@ declare(strict_types=1);
  */
 namespace Tusimo\Resource\Listener;
 
-use PDO;
 use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Database\Events\StatementPrepared;
@@ -28,7 +27,7 @@ class FetchModeListener implements ListenerInterface
     public function process(object $event)
     {
         if ($event instanceof StatementPrepared) {
-            $event->statement->setFetchMode(PDO::FETCH_ASSOC);
+            $event->statement->setFetchMode(\PDO::FETCH_ASSOC);
         }
     }
 }

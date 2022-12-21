@@ -8,9 +8,7 @@ declare(strict_types=1);
  */
 namespace Tusimo\Resource\Model\Concerns;
 
-use Closure;
 use Hyperf\Utils\Arr;
-use InvalidArgumentException;
 use Tusimo\Resource\Model\Scope;
 use Tusimo\Resource\Model\GlobalScope;
 
@@ -23,19 +21,19 @@ trait HasGlobalScopes
      *
      * @throws \InvalidArgumentException
      */
-    public static function addGlobalScope($scope, Closure $implementation = null)
+    public static function addGlobalScope($scope, \Closure $implementation = null)
     {
         if (is_string($scope) && ! is_null($implementation)) {
             return GlobalScope::$container[static::class][$scope] = $implementation;
         }
-        if ($scope instanceof Closure) {
+        if ($scope instanceof \Closure) {
             return GlobalScope::$container[static::class][spl_object_hash($scope)] = $scope;
         }
         if ($scope instanceof Scope) {
             return GlobalScope::$container[static::class][get_class($scope)] = $scope;
         }
 
-        throw new InvalidArgumentException('Global scope must be an instance of Closure or Scope.');
+        throw new \InvalidArgumentException('Global scope must be an instance of Closure or Scope.');
     }
 
     /**

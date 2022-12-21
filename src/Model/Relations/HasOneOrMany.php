@@ -193,7 +193,7 @@ abstract class HasOneOrMany extends Relation
     /**
      * Create a new instance of the related model.
      *
-     * @return \Tusimo\Resource\Model\Model
+     * @return static
      */
     public function create(array $attributes = [])
     {

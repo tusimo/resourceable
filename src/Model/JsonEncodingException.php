@@ -8,9 +8,7 @@ declare(strict_types=1);
  */
 namespace Tusimo\Resource\Model;
 
-use RuntimeException;
-
-class JsonEncodingException extends RuntimeException
+class JsonEncodingException extends \RuntimeException
 {
     /**
      * Create a new JSON encoding exception for the model.

@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace Tusimo\Resource\Model;
 
 use Faker\Generator as Faker;
-use InvalidArgumentException;
 use Hyperf\Macroable\Macroable;
 
 class FactoryBuilder
@@ -278,7 +277,7 @@ class FactoryBuilder
     protected function getRawAttributes(array $attributes = [])
     {
         if (! isset($this->definitions[$this->class][$this->name])) {
-            throw new InvalidArgumentException("Unable to locate factory with name [{$this->name}] [{$this->class}].");
+            throw new \InvalidArgumentException("Unable to locate factory with name [{$this->name}] [{$this->class}].");
         }
 
         $definition = call_user_func(
@@ -326,7 +325,7 @@ class FactoryBuilder
                     continue;
                 }
 
-                throw new InvalidArgumentException("Unable to locate [{$state}] state for [{$this->class}].");
+                throw new \InvalidArgumentException("Unable to locate [{$state}] state for [{$this->class}].");
             }
 
             $definition = array_merge(

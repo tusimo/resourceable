@@ -13,6 +13,7 @@ use Hyperf\Utils\Str;
 use Hyperf\Utils\Contracts\Jsonable;
 use Hyperf\Utils\Contracts\Arrayable;
 use Hyperf\Contract\CompressInterface;
+use Tusimo\Resource\Repository\Repository;
 use Hyperf\Utils\Collection as BaseCollection;
 use Psr\EventDispatcher\StoppableEventInterface;
 use Tusimo\Resource\Contract\ShouldMockContract;
@@ -1051,6 +1052,10 @@ abstract class Model implements \ArrayAccess, Arrayable, Jsonable, \JsonSerializ
                 if ($repository instanceof ShouldMockContract && $parentRepository instanceof RepositoryProxyAble) {
                     $parentRepository->setRepository($this->collectionRepository());
                 }
+            }
+            if ($this->repository instanceof Repository) {
+                $this->repository->setResourceName($this->getResourceName());
+                $this->repository->setKeyName($this->getKeyName());
             }
         }
         return $this->repository;

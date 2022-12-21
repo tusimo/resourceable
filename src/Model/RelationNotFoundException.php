@@ -8,9 +8,7 @@ declare(strict_types=1);
  */
 namespace Tusimo\Resource\Model;
 
-use RuntimeException;
-
-class RelationNotFoundException extends RuntimeException
+class RelationNotFoundException extends \RuntimeException
 {
     /**
      * The name of the affected Model model.

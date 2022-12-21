@@ -8,8 +8,6 @@ declare(strict_types=1);
  */
 namespace Tusimo\Resource\Model;
 
-use RuntimeException;
-
-class MassAssignmentException extends RuntimeException
+class MassAssignmentException extends \RuntimeException
 {
 }
