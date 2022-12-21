@@ -8,7 +8,6 @@ declare(strict_types=1);
  */
 namespace Hyperf\Utils;
 
-use Throwable;
 use Psr\Log\LoggerInterface;
 use Hyperf\Engine\Coroutine as Co;
 use Hyperf\Contract\StdoutLoggerInterface;
@@ -64,7 +63,7 @@ class Coroutine
                     'request_context',
                 ]);
                 call($callable);
-            } catch (Throwable $throwable) {
+            } catch (\Throwable $throwable) {
                 if (ApplicationContext::hasContainer()) {
                     $container = ApplicationContext::getContainer();
                     if ($container->has(StdoutLoggerInterface::class)) {

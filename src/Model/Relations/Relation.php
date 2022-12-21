@@ -8,7 +8,6 @@ declare(strict_types=1);
  */
 namespace Tusimo\Resource\Model\Relations;
 
-use Closure;
 use Hyperf\Utils\Arr;
 use Hyperf\Macroable\Macroable;
 use Tusimo\Resource\Model\Model;
@@ -92,7 +91,7 @@ abstract class Relation
     /**
      * Run a callback with constraints disabled on the relation.
      */
-    public static function noConstraints(Closure $callback)
+    public static function noConstraints(\Closure $callback)
     {
         $previous = Constraint::isConstraint();
 

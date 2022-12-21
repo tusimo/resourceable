@@ -9,10 +9,8 @@ declare(strict_types=1);
 namespace Tusimo\Resource\Model\Concerns;
 
 use Carbon\Carbon;
-use LogicException;
 use Hyperf\Utils\Arr;
 use Hyperf\Utils\Str;
-use DateTimeInterface;
 use Carbon\CarbonInterface;
 use Hyperf\Contract\Castable;
 use Hyperf\Contract\Synchronized;
@@ -357,11 +355,14 @@ trait HasAttributes
     /**
      * Decode the given JSON back into an array or object.
      *
-     * @param string $value
+     * @param array|string $value
      * @param bool $asObject
      */
     public function fromJson($value, $asObject = false)
     {
+        if (is_array($value)) {
+            return $value;
+        }
         return json_decode($value, ! $asObject);
     }
 
@@ -965,14 +966,14 @@ trait HasAttributes
 
         if (! $relation instanceof Relation) {
             if (is_null($relation)) {
-                throw new LogicException(sprintf(
+                throw new \LogicException(sprintf(
                     '%s::%s must return a relationship instance, but "null" was returned. Was the "return" keyword used?',
                     static::class,
                     $method
                 ));
             }
 
-            throw new LogicException(sprintf(
+            throw new \LogicException(sprintf(
                 '%s::%s must return a relationship instance.',
                 static::class,
                 $method
@@ -1295,7 +1296,7 @@ trait HasAttributes
         // If the value is already a DateTime instance, we will just skip the rest of
         // these checks since they will be a waste of time, and hinder performance
         // when checking the field. We will just return the DateTime right away.
-        if ($value instanceof DateTimeInterface) {
+        if ($value instanceof \DateTimeInterface) {
             return Carbon::parse(
                 $value->format('Y-m-d H:i:s.u'),
                 $value->getTimezone()
@@ -1355,7 +1356,7 @@ trait HasAttributes
      *
      * @return string
      */
-    protected function serializeDate(DateTimeInterface $date)
+    protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format($this->getDateFormat());
     }

@@ -403,7 +403,7 @@ class DbRepository extends Repository
                 $dbQuery->whereNotBetween($queryItem->getName(), $queryItem->getValue());
                 break;
             case 'like':
-                $dbQuery->whereLike($queryItem->getName(), $queryItem->getValue() . '%');
+                $dbQuery->where($queryItem->getName(), 'like', $queryItem->getValue() . '%');
                 break;
             case 'null':
                 $dbQuery->whereNull($queryItem->getName());

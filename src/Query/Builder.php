@@ -8,10 +8,8 @@ declare(strict_types=1);
  */
 namespace Tusimo\Resource\Query;
 
-use Closure;
 use Hyperf\Utils\Arr;
 use Hyperf\Utils\Str;
-use RuntimeException;
 use Tusimo\Restable\Query;
 use Hyperf\Utils\Collection;
 use Tusimo\Restable\QueryItem;
@@ -745,7 +743,7 @@ class Builder extends Query
      *
      * @param string $boolean
      */
-    public function whereNested(Closure $callback, $boolean = 'and')
+    public function whereNested(\Closure $callback, $boolean = 'and')
     {
         $this->throwMethodNotSupportedException(__FUNCTION__);
     }
@@ -775,7 +773,7 @@ class Builder extends Query
      * @param string $boolean
      * @param bool $not
      */
-    public function whereExists(Closure $callback, $boolean = 'and', $not = false)
+    public function whereExists(\Closure $callback, $boolean = 'and', $not = false)
     {
         $this->throwMethodNotSupportedException(__FUNCTION__);
     }
@@ -785,7 +783,7 @@ class Builder extends Query
      *
      * @param bool $not
      */
-    public function orWhereExists(Closure $callback, $not = false)
+    public function orWhereExists(\Closure $callback, $not = false)
     {
         $this->throwMethodNotSupportedException(__FUNCTION__);
     }
@@ -795,7 +793,7 @@ class Builder extends Query
      *
      * @param string $boolean
      */
-    public function whereNotExists(Closure $callback, $boolean = 'and')
+    public function whereNotExists(\Closure $callback, $boolean = 'and')
     {
         $this->throwMethodNotSupportedException(__FUNCTION__);
     }
@@ -803,7 +801,7 @@ class Builder extends Query
     /**
      * Add a where not exists clause to the query.
      */
-    public function orWhereNotExists(Closure $callback)
+    public function orWhereNotExists(\Closure $callback)
     {
         $this->throwMethodNotSupportedException(__FUNCTION__);
     }
@@ -2180,7 +2178,7 @@ class Builder extends Query
      * @param string $boolean
      * @param bool $not
      */
-    protected function whereInSub($column, Closure $callback, $boolean, $not)
+    protected function whereInSub($column, \Closure $callback, $boolean, $not)
     {
         $this->throwMethodNotSupportedException(__FUNCTION__);
     }
@@ -2219,7 +2217,7 @@ class Builder extends Query
      * @param string $operator
      * @param string $boolean
      */
-    protected function whereSub($column, $operator, Closure $callback, $boolean)
+    protected function whereSub($column, $operator, \Closure $callback, $boolean)
     {
         $this->throwMethodNotSupportedException(__FUNCTION__);
     }
@@ -2292,7 +2290,7 @@ class Builder extends Query
     protected function enforceOrderBy()
     {
         if (! $this->hasQueryOrderBy()) {
-            throw new RuntimeException('You must specify an orderBy clause when using this function.');
+            throw new \RuntimeException('You must specify an orderBy clause when using this function.');
         }
     }
 

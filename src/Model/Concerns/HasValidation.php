@@ -96,7 +96,7 @@ trait HasValidation
         return $this;
     }
 
-    public function validate(string $method): self
+    public function validate(string $method): static
     {
         if ($this->shouldSkipValidate($method)) {
             return $this;
@@ -114,6 +114,7 @@ trait HasValidation
             ->setData($this->getValidationAttributes($method))
             ->setRules($this->getValidationRules($method))
             ->validate();
+        $this->validateCallable($method);
         return $this;
     }
 
@@ -121,9 +122,9 @@ trait HasValidation
     {
         switch ($method) {
             case static::$METHOD_UPDATING:
-                return $this->updatingRules;
+                return $this->getUpdatingRules();
             case static::$METHOD_CREATING:
-                return $this->creatingRules;
+                return $this->getCreatingRules();
         }
         return $this->rules;
     }
@@ -208,6 +209,27 @@ trait HasValidation
                 ->make([], []);
         }
         return $this->validator;
+    }
+
+    protected function getCreatingRules(): array
+    {
+        return $this->creatingRules;
+    }
+
+    protected function getUpdatingRules(): array
+    {
+        return $this->updatingRules;
+    }
+
+    protected function validateCallable(string $method): static
+    {
+        if ($method == self::$METHOD_CREATING && method_exists($this, 'validateWhenCreate')) {
+            $this->validateWhenCreate();
+        }
+        if ($method == self::$METHOD_UPDATING && method_exists($this, 'validateWhenUpdate')) {
+            $this->validateWhenUpdate();
+        }
+        return $this;
     }
 
     protected function getCreatingValidationAttributes(): array

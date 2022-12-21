@@ -12,7 +12,6 @@ use Closure;
 use Hyperf\Utils\Arr;
 use Hyperf\Utils\Str;
 use Tusimo\Restable\Query;
-use BadMethodCallException;
 use Hyperf\Paginator\Paginator;
 use Hyperf\Utils\Contracts\Arrayable;
 use Hyperf\Utils\Traits\ForwardsCalls;
@@ -124,7 +123,7 @@ class Builder
         }
 
         if (isset(static::$macros[$method])) {
-            if (static::$macros[$method] instanceof Closure) {
+            if (static::$macros[$method] instanceof \Closure) {
                 return call_user_func_array(static::$macros[$method]->bindTo($this, static::class), $parameters);
             }
 
@@ -164,8 +163,8 @@ class Builder
             static::throwBadMethodCallException($method);
         }
 
-        if (static::$macros[$method] instanceof Closure) {
-            return call_user_func_array(Closure::bind(static::$macros[$method], null, static::class), $parameters);
+        if (static::$macros[$method] instanceof \Closure) {
+            return call_user_func_array(\Closure::bind(static::$macros[$method], null, static::class), $parameters);
         }
 
         return call_user_func_array(static::$macros[$method], $parameters);
@@ -299,7 +298,7 @@ class Builder
      */
     public function where($column, $operator = null, $value = null, $boolean = 'and')
     {
-        if ($column instanceof Closure) {
+        if ($column instanceof \Closure) {
             $column($query = $this->model->newModelQuery());
 
             $this->query->addNestedWhereQuery($query->getQuery(), $boolean);
@@ -531,9 +530,9 @@ class Builder
      * @param array|\Closure $columns
      * @return mixed|static|\Tusimo\Resource\Model\Model
      */
-    public function firstOr($columns = ['*'], Closure $callback = null)
+    public function firstOr($columns = ['*'], \Closure $callback = null)
     {
-        if ($columns instanceof Closure) {
+        if ($columns instanceof \Closure) {
             $callback = $columns;
 
             $columns = ['*'];
@@ -626,21 +625,22 @@ class Builder
                 if (method_exists($this->getModel()->newInstance(), $name)) {
                     return $this->getModel()->newInstance()->{$name}();
                 }
-            } catch (BadMethodCallException $e) {
+            } catch (\BadMethodCallException $e) {
                 throw RelationNotFoundException::make($this->getModel(), $name);
             }
         });
 
         $nested = $this->relationsNestedUnder($name);
-
-        $query = $relation->getQuery();
-        $subSelect = $this->getQuery()->getQuerySelect()->getSubResourceSelectByKey($name);
-        $subQuery = $this->getQuery()->getSubResourceQueryItemsByKey($name);
-        if ($subSelect) {
-            $query->select($subSelect);
-        }
-        if ($subQuery) {
-            $query->getQuery()->setQueryItems($subQuery);
+        if ($relation) {
+            $query = $relation->getQuery();
+            $subSelect = $this->getQuery()->getQuerySelect()->getSubResourceSelectByKey($name);
+            $subQuery = $this->getQuery()->getSubResourceQueryItemsByKey($name);
+            if ($subSelect) {
+                $query->select($subSelect);
+            }
+            if ($subQuery) {
+                $query->getQuery()->setQueryItems($subQuery);
+            }
         }
 
         // If there are nested relationships set on the query, we will put those onto
@@ -950,7 +950,7 @@ class Builder
     /**
      * Register a replacement for the default delete function.
      */
-    public function onDelete(Closure $callback)
+    public function onDelete(\Closure $callback)
     {
         $this->onDelete = $callback;
     }
@@ -1004,7 +1004,7 @@ class Builder
                 // If the scope is a Closure we will just go ahead and call the scope with the
                 // builder instance. The "callScope" method will properly group the clauses
                 // that are added to this query so "where" clauses maintain proper logic.
-                if ($scope instanceof Closure) {
+                if ($scope instanceof \Closure) {
                     $scope($builder);
                 }
 
@@ -1197,7 +1197,7 @@ class Builder
      * @param string $name
      * @return array
      */
-    protected function eagerLoadRelation(array $models, $name, Closure $constraints)
+    protected function eagerLoadRelation(array $models, $name, \Closure $constraints)
     {
         // First we will "back up" the existing where conditions on the query so we can
         // add our eager constraints. Then we will merge the wheres that were on the

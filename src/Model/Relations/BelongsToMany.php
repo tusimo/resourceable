@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace Tusimo\Resource\Model\Relations;
 
 use Hyperf\Utils\Str;
-use InvalidArgumentException;
 use Tusimo\Resource\Model\Model;
 use Tusimo\Resource\Model\Builder;
 use Tusimo\Resource\Model\Collection;
@@ -339,7 +338,7 @@ class BelongsToMany extends Relation
         }
 
         if (is_null($value)) {
-            throw new InvalidArgumentException('The provided value may not be null.');
+            throw new \InvalidArgumentException('The provided value may not be null.');
         }
 
         $this->pivotValues[] = compact('column', 'value');

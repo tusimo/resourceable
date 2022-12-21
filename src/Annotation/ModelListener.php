@@ -18,7 +18,7 @@ use Tusimo\Resource\Collector\ListenerCollector;
  * @Annotation
  * @Target({"CLASS"})
  */
-#[Attribute(Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class ModelListener extends AbstractAnnotation
 {
     /**

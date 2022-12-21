@@ -8,11 +8,10 @@ declare(strict_types=1);
  */
 namespace Tusimo\Resource\Model;
 
-use ArrayAccess;
 use Faker\Generator as Faker;
 use Symfony\Component\Finder\Finder;
 
-class Factory implements ArrayAccess
+class Factory implements \ArrayAccess
 {
     /**
      * The model definitions in the container.

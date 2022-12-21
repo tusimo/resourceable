@@ -14,10 +14,6 @@ use Tusimo\Resource\Model\Model;
 use Tusimo\Resource\Entity\RequestContext;
 use Psr\EventDispatcher\StoppableEventInterface;
 
-use function lcfirst;
-use function method_exists;
-use function class_basename;
-
 abstract class Event implements StoppableEventInterface
 {
     use Stoppable;
@@ -40,7 +36,7 @@ abstract class Event implements StoppableEventInterface
     public function __construct(Model $model, ?string $method = null)
     {
         $this->model = $model;
-        $this->method = $method ?? lcfirst(class_basename(static::class));
+        $this->method = $method ?? \lcfirst(\class_basename(static::class));
         $this->context = request_context()->toArray();
     }
 
@@ -51,7 +47,7 @@ abstract class Event implements StoppableEventInterface
 
     public function handle()
     {
-        if (method_exists($this->getModel(), $this->getMethod())) {
+        if (\method_exists($this->getModel(), $this->getMethod())) {
             $this->getModel()->{$this->getMethod()}($this);
         }
 
