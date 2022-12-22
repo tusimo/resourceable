@@ -10,6 +10,7 @@ namespace Tusimo\Resource\Model\Concerns;
 
 use Hyperf\Validation\Validator;
 use Tusimo\Resource\Model\Register;
+use Tusimo\Resource\Exception\Service\ServiceException;
 use Hyperf\Validation\Contract\ValidatorFactoryInterface;
 
 trait HasValidation
@@ -74,6 +75,19 @@ trait HasValidation
     protected $validator;
 
     /**
+     * When is true,
+     * all content should and only in the rule keys.
+     * @var mixed
+     */
+    protected $validateStrict = false;
+
+    /**
+     * auto remove attribute not exists in rules.
+     * @var mixed
+     */
+    protected $autoRemove = false;
+
+    /**
      * Skip Validation.
      *
      * @param bool $skip
@@ -96,6 +110,7 @@ trait HasValidation
         return $this;
     }
 
+
     public function validate(string $method): static
     {
         if ($this->shouldSkipValidate($method)) {
@@ -110,6 +125,7 @@ trait HasValidation
         if (is_null($this->getValidator())) {
             return $this;
         }
+        $this->strictValidate($method);
         $this->getValidator()
             ->setData($this->getValidationAttributes($method))
             ->setRules($this->getValidationRules($method))
@@ -209,6 +225,38 @@ trait HasValidation
                 ->make([], []);
         }
         return $this->validator;
+    }
+
+    protected function strictValidate(string $method)
+    {
+        $rules = [];
+        $attributes = $this->getAttributes();
+        switch ($method) {
+            case static::$METHOD_UPDATING:
+                $attributes = $this->getChanges();
+                $rules = $this->getUpdatingRules();
+                break;
+            case static::$METHOD_CREATING:
+                $rules = $this->getCreatingRules();
+                break;
+        }
+        // check current incoming attributes
+        $unAcceptedAttributes = [];
+        foreach ($attributes as $attribute => $value) {
+            if (!isset($rules[$attribute])) {
+                $unAcceptedAttributes[] = $attribute;
+            }
+        }
+        if (! empty($unAcceptedAttributes)) {
+            if ($this->validateStrict) {
+                throw new ServiceException('payload is not accepted :' . implode(',', $unAcceptedAttributes), 422);
+            }
+            if ($this->autoRemove) {
+                foreach ($unAcceptedAttributes as $attribute) {
+                    $this->removeAttribute($attribute);
+                }
+            }
+        }
     }
 
     protected function getCreatingRules(): array
