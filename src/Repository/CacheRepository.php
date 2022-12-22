@@ -78,6 +78,7 @@ class CacheRepository extends Repository implements ResourceCleanAble, Repositor
         $this->cacheList = true;
         return $this;
     }
+
     public function shouldCacheList(): bool
     {
         return $this->cacheList;
@@ -289,7 +290,7 @@ class CacheRepository extends Repository implements ResourceCleanAble, Repositor
     {
         $query->select($this->getParsedSelect($query->getQuerySelect()->getSelects()));
         return tap($this->getRepository()->list($query), function (LengthAwarePaginator $paginator) use ($query) {
-            if ($this->shouldCache() && $this->cacheList() && $query->getQuerySelect()->isSelectAll()) {
+            if ($this->shouldCache() && $this->shouldCacheList() && $query->getQuerySelect()->isSelectAll()) {
                 $this->getCache()->setResourcesCache($paginator->items(), $this->getRandomTtl());
             }
         });
@@ -302,7 +303,7 @@ class CacheRepository extends Repository implements ResourceCleanAble, Repositor
     {
         $query->select($this->getParsedSelect($query->getQuerySelect()->getSelects()));
         return tap($this->getRepository()->getByQuery($query), function ($resources) use ($query) {
-            if ($this->shouldCache() && $this->cacheList() && $query->getQuerySelect()->isSelectAll()) {
+            if ($this->shouldCache() && $this->shouldCacheList() && $query->getQuerySelect()->isSelectAll()) {
                 $this->getCache()->setResourcesCache($resources, $this->getRandomTtl());
             }
         });
