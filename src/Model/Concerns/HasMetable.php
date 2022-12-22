@@ -10,6 +10,8 @@ namespace Tusimo\Resource\Model\Concerns;
 
 trait HasMetable
 {
+    protected $timelineName = 'timelines';
+
     public function getMeta(?string $key = null, $default = null)
     {
         if (is_null($key)) {
@@ -21,6 +23,14 @@ trait HasMetable
     public function setMeta(string $key, $value)
     {
         data_set($this->meta, $key, $value);
+        return $this;
+    }
+
+    public function timeline(array $timeline)
+    {
+        $currentTimelines = $this->{$this->timelineName} ?? [];
+        $currentTimelines[] = $timeline;
+        $this->{$this->timelineName} = $currentTimelines;
         return $this;
     }
 }

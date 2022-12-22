@@ -552,7 +552,7 @@ abstract class Model implements \ArrayAccess, Arrayable, Jsonable, \JsonSerializ
         if (is_null($this->getKeyName())) {
             throw new \Exception('No primary key defined on model.');
         }
-
+        
         // If the model doesn't exist, there is nothing to delete so we'll just return
         // immediately and not do anything else. Otherwise, we will continue with a
         // deletion process on the model, firing the proper events, and so forth.
@@ -1224,6 +1224,8 @@ abstract class Model implements \ArrayAccess, Arrayable, Jsonable, \JsonSerializ
      */
     protected function performUpdate(Builder $query)
     {
+        $this->validate(static::$METHOD_UPDATING);
+
         // If the updating event returns false, we will cancel the update operation so
         // developers can hook Validation systems into their models and cancel this
         // operation if the model does not pass validation. Otherwise, we update.
@@ -1232,8 +1234,6 @@ abstract class Model implements \ArrayAccess, Arrayable, Jsonable, \JsonSerializ
                 return false;
             }
         }
-
-        $this->validate(static::$METHOD_UPDATING);
 
         // First we need to create a fresh query instance and touch the creation and
         // update timestamp on the model which are maintained by us for developer
@@ -1287,12 +1287,13 @@ abstract class Model implements \ArrayAccess, Arrayable, Jsonable, \JsonSerializ
      */
     protected function performInsert(Builder $query)
     {
+        $this->validate(static::$METHOD_CREATING);
+
         if ($event = $this->fireModelEvent('creating')) {
             if ($event instanceof StoppableEventInterface && $event->isPropagationStopped()) {
                 return false;
             }
         }
-        $this->validate(static::$METHOD_CREATING);
 
         // First we'll need to create a fresh query instance and touch the creation and
         // update timestamps on this model, which are maintained by us for developer
