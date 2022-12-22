@@ -25,7 +25,7 @@ class CacheRepository extends Repository implements ResourceCleanAble, Repositor
     /**
      * Expire Seconds for resource.
      */
-    protected int $ttl = 3600;
+    protected int $ttl = 600;
 
     /**
      * Clean resource when remote resource changed.
@@ -38,6 +38,8 @@ class CacheRepository extends Repository implements ResourceCleanAble, Repositor
     protected ResourceCacheAble $cache;
 
     protected bool $withoutCache = false;
+
+    protected bool $cacheList = false;
 
     public function __construct(
         ResourceRepositoryContract $repository,
@@ -63,6 +65,22 @@ class CacheRepository extends Repository implements ResourceCleanAble, Repositor
     {
         $this->withoutCache = false;
         return $this;
+    }
+
+    public function withoutCacheList()
+    {
+        $this->cacheList = false;
+        return $this;
+    }
+
+    public function withCacheList()
+    {
+        $this->cacheList = true;
+        return $this;
+    }
+    public function shouldCacheList(): bool
+    {
+        return $this->cacheList;
     }
 
     public function shouldCache(): bool
@@ -271,7 +289,7 @@ class CacheRepository extends Repository implements ResourceCleanAble, Repositor
     {
         $query->select($this->getParsedSelect($query->getQuerySelect()->getSelects()));
         return tap($this->getRepository()->list($query), function (LengthAwarePaginator $paginator) use ($query) {
-            if ($this->shouldCache() && $query->getQuerySelect()->isSelectAll()) {
+            if ($this->shouldCache() && $this->cacheList() && $query->getQuerySelect()->isSelectAll()) {
                 $this->getCache()->setResourcesCache($paginator->items(), $this->getRandomTtl());
             }
         });
@@ -284,7 +302,7 @@ class CacheRepository extends Repository implements ResourceCleanAble, Repositor
     {
         $query->select($this->getParsedSelect($query->getQuerySelect()->getSelects()));
         return tap($this->getRepository()->getByQuery($query), function ($resources) use ($query) {
-            if ($this->shouldCache() && $query->getQuerySelect()->isSelectAll()) {
+            if ($this->shouldCache() && $this->cacheList() && $query->getQuerySelect()->isSelectAll()) {
                 $this->getCache()->setResourcesCache($resources, $this->getRandomTtl());
             }
         });
@@ -408,7 +426,7 @@ class CacheRepository extends Repository implements ResourceCleanAble, Repositor
 
     protected function getRandomTtl()
     {
-        return rand($this->getTtl() - 20, $this->getTtl() + 20);
+        return rand($this->getTtl() - 100, $this->getTtl() + 400);
     }
 
     protected function setCacheExpiring($id)

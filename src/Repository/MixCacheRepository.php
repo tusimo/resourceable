@@ -27,7 +27,7 @@ class MixCacheRepository extends ProxyRepository implements ResourceCleanAble, R
     /**
      * Ttl in seconds.
      */
-    protected int $ttl;
+    protected int $ttl = 600;
 
     /**
      * Mix Keys
@@ -40,7 +40,7 @@ class MixCacheRepository extends ProxyRepository implements ResourceCleanAble, R
         string $resourceName,
         ResourceCacheAble $cache = null,
         string $keyName = 'id',
-        int $ttl = 3600,
+        int $ttl = 600,
         array $mixKeys = []
     ) {
         $this->repository = $repository;
@@ -342,6 +342,6 @@ class MixCacheRepository extends ProxyRepository implements ResourceCleanAble, R
 
     protected function getRandomTtl()
     {
-        return rand($this->getTtl() - 20, $this->getTtl() + 20);
+        return rand($this->getTtl() - 100, $this->getTtl() + 400);
     }
 }
