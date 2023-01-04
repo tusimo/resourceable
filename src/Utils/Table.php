@@ -13,10 +13,9 @@ class Table extends \Swoole\Table
     protected $dataSize = 4096;
 
     /**
-     * @param mixed $key
      * @return bool
      */
-    public function set($key, array $value)
+    public function set(string $key, array $value):bool
     {
         if ($this->count() >= $this->getSize()) {
             $this->clear();
@@ -53,7 +52,7 @@ class Table extends \Swoole\Table
      * @param null|mixed $field
      * @return mixed
      */
-    public function get($key, $field = null)
+    public function get(string $key, ?string $field = null): array|string|int|float|false
     {
         $value = parent::get($key);
         if ($value === false) {
@@ -69,7 +68,7 @@ class Table extends \Swoole\Table
         return json_decode($value['data'], true)[$field] ?? null;
     }
 
-    public function exist($key)
+    public function exist($key):bool
     {
         return $this->get($key) !== false;
     }
@@ -80,7 +79,7 @@ class Table extends \Swoole\Table
      * @param mixed $column
      * @return int
      */
-    public function incr($key, $column, $incrby = 1)
+    public function incr($key, $column, $incrby = 1): int|float
     {
         $value = parent::get($key);
         if ($value === false) {
@@ -99,7 +98,7 @@ class Table extends \Swoole\Table
      * @param mixed $column
      * @return int
      */
-    public function decr($key, $column, $decrby = 1)
+    public function decr($key, $column, $decrby = 1): int|float
     {
         $value = parent::get($key);
         if ($value === false) {
