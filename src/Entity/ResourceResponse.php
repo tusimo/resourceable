@@ -76,7 +76,7 @@ class ResourceResponse
     public function error(string $msg, int $code = 400): ResourceResponse
     {
         return $this->withMsg($msg)->withCode($code)
-            ->withStatus(200)->withData(null)->send();
+            ->withStatus(400)->withData(null)->send();
     }
 
     public function noContent(): ResourceResponse
